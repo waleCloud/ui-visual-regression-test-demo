@@ -26,4 +26,12 @@ jobs:
         # Chromatic GitHub Action options
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-            
+  comment-on-pr:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v4
+    - uses: ./
+      with:
+        token: ${{ secrets.GITHUB_TOKEN }}
+        name: Test Basic Success
+        conclusion: success
