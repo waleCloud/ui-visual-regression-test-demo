@@ -21,18 +21,16 @@ jobs:
         # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
         run: yarn
         # 👇 Adds Chromatic as a step in the workflow
-      - name: Show outputs
+      - name: Publish to Chromatic
+        uses: chromaui/action@v1
+        # Chromatic GitHub Action options
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+      - uses: LouisBrunner/checks-action@v1.6.2
         id: test
-        uses: LouisBrunner/checks-action@v1.6.2
         with:
           token: ${{ secrets.GH_TOKEN }}
           name: Test output
           conclusion: ${{ job.status }}
           output: |
             {"summary":"${{ steps.test.outputs.summary }}"}
-      - name: Publish to Chromatic
-        uses: chromaui/action@v1
-        # Chromatic GitHub Action options
-        with:
-          # 👇 Chromatic projectToken, refer to the manage page to obtain it.
-          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
