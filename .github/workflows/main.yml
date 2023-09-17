@@ -17,6 +17,9 @@ jobs:
     # Job steps
     steps:
       - uses: actions/checkout@v1
+      - uses: actions/create-outputs@v0.0.0-fake
+        id: test
+      - uses: LouisBrunner/checks-action@v1.6.2
       - name: Install dependencies
         # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
         run: yarn
@@ -31,6 +34,4 @@ jobs:
           name: Publish Summary
           conclusion: ${{ job.status }}
           output: |
-            {"summary":"${{ steps.test.outputs.summary }}"}
-          run: echo -e "| Results |  |\n| --- | --- |\n| Build Results | ${{steps.chromatic.outputs.buildUrl}} |\n| Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |\n| Component Count | ${{steps.chromatic.outputs.componentCount}} |" >> $GITHUB_STEP_SUMMARY
-      
+            {"summary":${{ steps.test.outputs.summary }}}
