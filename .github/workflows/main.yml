@@ -21,11 +21,12 @@ jobs:
         # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
         run: yarn
         # 👇 Adds Chromatic as a step in the workflow
-      - name: Shoe outputs
+      - name: Show outputs
         id: test
         uses: LouisBrunner/checks-action@v1.6.2
         with:
           token: ${{ secrets.GH_TOKEN }}
+          name: Test output
           conclusion: ${{ job.status }}
           output: |
             {"summary":${{ steps.test.outputs.summary }}}
