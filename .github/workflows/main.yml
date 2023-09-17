@@ -29,7 +29,7 @@ jobs:
           name: Test output
           conclusion: ${{ job.status }}
           output: |
-            {"summary":${{ steps.test.outputs.summary }}}
+            {"summary":"${{ steps.test.outputs.summary }}"}
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
