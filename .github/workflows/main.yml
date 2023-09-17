@@ -26,11 +26,10 @@ jobs:
         # Chromatic GitHub Action options
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-      - uses: LouisBrunner/checks-action@v1.6.2
-        id: test
+        
+      - name: Comment Pull Request
+        uses: thollander/actions-comment-pull-request@v2.4.2
         with:
           token: ${{ secrets.GITHUB_TOKEN }}
-          name: Test output
-          conclusion: ${{ job.status }}
-          output: |
-            {"summary":"${{ steps.test.outputs.summary }}"}
+          message: |
+            {"summary":"${{ steps.name.outputs.summary }}"}
