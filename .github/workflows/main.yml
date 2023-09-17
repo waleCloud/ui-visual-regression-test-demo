@@ -29,7 +29,7 @@ jobs:
       - uses: LouisBrunner/checks-action@v1.6.2
         id: test
         with:
-          token: ${{ secrets.GH_TOKEN }}
+          token: ${{ secrets.GITHUB_TOKEN }}
           name: Test output
           conclusion: ${{ job.status }}
           output: |
