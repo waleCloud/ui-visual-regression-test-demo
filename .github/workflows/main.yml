@@ -29,8 +29,10 @@ jobs:
   comment-on-pr:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - uses: ./
+    - uses: actions/checkout@v1
+      id: test
+    - uses: LouisBrunner/checks-action@v1.6.2
+      if: always()
       with:
         token: ${{ secrets.GITHUB_TOKEN }}
         name: Test Basic Success
