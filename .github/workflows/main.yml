@@ -24,12 +24,14 @@ jobs:
       - name: Publish to Chromatic
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
+        id: test
+      - uses: LouisBrunner/checks-action@v1.6.2
+        if: always()
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        
-      - name: Comment Pull Request
-        uses: thollander/actions-comment-pull-request@v2.4.2
-        with:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          message: |
-            {"summary":"${{ steps.name.outputs.summary }}"}
+          token: ${{ secrets.GITHUB_TOKEN }}
+          name: Test XYZ
+          conclusion: ${{ job.status }}
+          output: |
+            {"summary":${{ steps.test.outputs.summary }}}
+            
