@@ -26,24 +26,10 @@ jobs:
         # Chromatic GitHub Action options
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          run: echo | "published " >> "$chromatic-deployment.outputs"
-  Build-summary-on-pr:
-    runs-on: ubuntu-latest
-    steps:
-    - uses: actions/checkout@v1
-      id: test
-    - uses: LouisBrunner/checks-action@v1.6.2
-      if: always()
-      with:
-        token: ${{ secrets.GITHUB_TOKEN }}
-        name: Test Summary
-        conclusion: success
-        output: |
-          {"summary":"${{ steps.test.outputs.summary }}"}
-        run: echo "$output" 
   example_comment_pr:
     runs-on: ubuntu-latest
     name: An example job to comment a PR
+    needs: chromatic-deployment
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -53,4 +39,5 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            Hello world ! :wave:
+            {"chromatic url":"${{ needs.chromatic-deployment.outputs.buildUrl }}"}
+            {"storybook url":"${{ needs.chromatic-deployment.outputs.storybookUrl }}"}
