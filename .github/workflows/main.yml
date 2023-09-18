@@ -39,5 +39,4 @@ jobs:
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           message: |
-            {"chromatic url":"${{ needs.chromatic-deployment.outputs.buildUrl }}"}
-            {"storybook url":"${{ needs.chromatic-deployment.outputs.storybookUrl }}"}
+            chromatic url: "${{needs.chromatic-deployment.outputs.buildUrl}}
