@@ -1,7 +1,7 @@
 # .github/workflows/main.yml
 
 # Workflow name
-name: 'Chromatic'
+name: 'UI Tests'
 
 # Event for the workflow
 on:
@@ -15,8 +15,6 @@ jobs:
     # Operating System
     runs-on: ubuntu-latest
     # Job steps
-    outputs:
-      output: ${{ steps.step1.outputs }}
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
@@ -24,16 +22,17 @@ jobs:
         run: yarn
         # 👇 Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
-        id: step1
+        id: chromatic
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
         
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-          run: echo "test" >> "$GITHUB_OUTPUT"
-  example_comment_pr:
+          run: echo -e "| Results |  |\n| --- | --- |\n| Build Results | ${{steps.chromatic.outputs.buildUrl}} |\n| Storybook Preview | ${{steps.chromatic.outputs.storybookUrl}} |\n| Component Count | ${{steps.chromatic.outputs.componentCount}} |" >> $GITHUB_STEP_SUMMARY
+
+  publish-job-summary:
     runs-on: ubuntu-latest
-    name: An example job to comment a PR
+    name: Publish URLs
     needs: chromatic-deployment
     steps:
       - name: Checkout
@@ -43,6 +42,7 @@ jobs:
         uses: thollander/actions-comment-pull-request@v2.4.2
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          run: echo ${{needs.chromatic-deployment.outputs.output}}
+          run: echo 'Run echo' >> $GITHUB_STEP_SUMMARY
           message: |
-            chromatic url: ${{needs.chromatic-deployment.outputs.buildUrl}}
+            chromatic url: ${{steps.chromatic.outputs.buildUrl}}
+            'summary' >>   $GITHUB_STEP_SUMMARY
