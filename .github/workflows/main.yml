@@ -14,55 +14,15 @@ jobs:
   chromatic-deployment:
     # Operating System
     runs-on: ubuntu-latest
-    outputs:
-      output1: ${{ steps.chromatic.outputs.buildUrl }}
-      output2: ${{ steps.chromatic.outputs.chromatic }}
     # Job steps
     steps:
       - uses: actions/checkout@v1
       - name: Install dependencies
-        # 👇 Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
+        # Install dependencies with the same package manager used in the project (replace it as needed), e.g. yarn, npm, pnpm
         run: yarn
-        # 👇 Adds Chromatic as a step in the workflow
-      - id: chromatic
-        run: echo "chromatic=hello world" >> "$GITHUB_OUTPUT"
-      - id: chrome
-        run: echo "chrome=${{steps.chromatic.outputs}}" >> "$GITHUB_OUTPUT"
+        # Adds Chromatic as a step in the workflow
       - name: Publish to Chromatic
-        id: chromatic2
         uses: chromaui/action@v1
         # Chromatic GitHub Action options
         with:
           projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
-        
-  print-results:
-    runs-on: ubuntu-latest
-    needs: chromatic-deployment
-    steps:
-      - env:
-          OUTPUT1: ${{needs.chromatic-deployment.outputs.output1}}
-          OUTPUT2: ${{needs.chromatic-deployment.outputs.output2}}
-        run: echo -e "| Results |  |\n| --- | --- |\n| Build Results | ${{steps.chromatic2.outputs.buildUrl}} |\n| Storybook Preview | ${{steps.chromatic2.outputs.storybookUrl}} |\n| Component Count | ${{steps.chromatic1.outputs.componentCount}} |" >> $GITHUB_STEP_SUMMARY
-  
-  print-results2:
-    runs-on: ubuntu-latest
-    needs: chromatic-deployment
-    steps:
-      - env:
-          OUTPUT1: ${{needs.chromatic-deployment.outputs.output1}}
-          OUTPUT2: ${{needs.chromatic-deployment.outputs.output2}}
-        run: echo "$OUTPUT1 $OUTPUT2"
-  # publish-job-summary:
-  #   runs-on: ubuntu-latest
-  #   name: Publish URLs
-  #   needs: chromatic-deployment
-  #   steps:
-  #     - name: Checkout
-  #       uses: actions/checkout@v3
-
-  #     - name: Comment PR
-  #       uses: thollander/actions-comment-pull-request@v2.4.2
-  #       with:
-  #         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-  #         message:
-  #           summary ${{GITHUB_STEP_SUMMARY}}
