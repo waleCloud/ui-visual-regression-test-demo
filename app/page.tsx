@@ -21,10 +21,11 @@ export default function Home() {
               alt="Vercel Logo"
               className="dark:invert"
               width={100}
-              height={24}
+              height={54}
               priority
             />
           </a>
+
         </div>
       </div>
 
@@ -37,6 +38,7 @@ export default function Home() {
           height={37}
           priority
         />
+        <p>New change introduced</p>
       </div>
 
       <div className="mb-32 grid text-center lg:max-w-5xl lg:w-full lg:mb-0 lg:grid-cols-4 lg:text-left">
