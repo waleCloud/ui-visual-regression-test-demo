@@ -23,5 +23,6 @@ export const Small: Story = {
   args: {
     size: 'small',
     label: 'Button',
+    backgroundColor: 'red'
   },
 };
